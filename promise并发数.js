@@ -1,4 +1,4 @@
-class requestList {
+class RequestLimit {
     constructor (limit) {
         this.limit = limit || 2;
         this.waitQueue = [];
@@ -11,7 +11,7 @@ class requestList {
         if (this.currentNum >= this.limit) {
             await new Promise ((resolve) => this.waitQueue.push(resolve))
         }
-        return handleReq(req)
+        return this.handleReq(req)
     }
     async handleReq(req) {
         this.currentNum++
@@ -21,8 +21,10 @@ class requestList {
             return Promise.reject(err)
         }finally {
             this.currentNum--
-            this.waitQueue[0]()
-            this.waitQueue.shift()
+            if(this.waitQueue.length) {
+                this.waitQueue[0]()
+                this.waitQueue.shift()
+            }
         }
 
     }
