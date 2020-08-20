@@ -6,11 +6,11 @@ let treeList = {
             children: [
                 {
                         name: 'c11',
-                    children: []        
+                    children: []
                     },
                     {
                         name: 'c12',
-                    children: []        
+                    children: []
                 }
             ]
         },
@@ -19,11 +19,11 @@ let treeList = {
             children: [
                 {
                         name: 'c21',
-                    children: []        
+                    children: []
                     },
                     {
                         name: 'c22',
-                    children: []        
+                    children: []
                 }
             ]
         }
@@ -34,14 +34,32 @@ let treeList = {
 // ['root', 'c1','c11', 'c12', 'c2', 'c21', 'c22']
 
 function deepLoop (obj) {
-    let childrenList = []
-    obj.name && childrenList.push(obj.name)
+    let nameList = []
+    obj.name && nameList.push(obj.name)
     if(obj.children && obj.children.length) {
         for(const v of obj.children) {
-            childrenList.push(...deepLoop(v))
+            nameList.push(...deepLoop(v))
         }
     }
-    return childrenList
+    return nameList
 }
 
-console.log(deepLoop(treeList));
+console.log(stackLoop(treeList));
+
+
+//用栈的方式
+function stackLoop(obj) {
+    let stackList = []
+    let nameList = []
+    stackList.push(obj)
+    while(stackList.length) {
+        let node = stackList.pop()
+        node.name && nameList.push(node.name)
+        if(node.children && node.children.length) {
+            stackList.push(...node.children.reverse())
+        }
+    }
+
+    return nameList
+
+}
