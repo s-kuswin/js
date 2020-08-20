@@ -7,3 +7,9 @@ function flatArr (arr) {
     }
     return arrList
 }
+
+function flatArr2(arr) {
+    return arr.reduce((prvious,current) => {
+        return Array.isArray(current)?prvious.concat(flatArr2(current)):prvious.concat(current)
+    })
+}
